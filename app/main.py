@@ -1,7 +1,10 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
+from fastapi import HTTPException
+from sqlalchemy.exc import SQLAlchemyError
 
+from app.db.session import check_db_connection
 
 app = FastAPI()
 
@@ -31,6 +34,18 @@ def read_root():
 def health_check():
     return {"message": "ok"}
 
+
+@app.get("/health/db")
+def database_health_check():
+    try:
+        check_db_connection()
+    except SQLAlchemyError:
+        raise HTTPException(
+            status_code=503,
+            detail="Database unavailable",
+        )
+
+    return {"database": "ok"}
 
 
 @app.get("/tasks/{task_id}", response_model=TaskResponse)
