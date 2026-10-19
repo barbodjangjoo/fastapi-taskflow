@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from app.dependencies import get_task_service
 from app.schemas.task import TaskCreate, TaskResponse
 from app.services.task_service import TaskService
+from app.schemas.task import TaskCreate, TaskResponse, TaskUpdate
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
@@ -40,3 +41,24 @@ def create_task(
         description=task_data.description,
         is_completed=task_data.completed,
     )
+
+@router.patch("/{task_id}", response_model=TaskResponse)
+def update_task(
+    task_id: int,
+    task_data: TaskUpdate,
+    service: TaskService = Depends(get_task_service),
+):
+    data = task_data.model_dump(exclude_unset=True)
+
+    task = service.update_task(
+        task_id=task_id,
+        data=data,
+    )
+
+    if task is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Task not found",
+        )
+
+    return task
