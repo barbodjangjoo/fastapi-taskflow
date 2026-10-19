@@ -1,3 +1,4 @@
+from datauri import datauri
 from app.models.task import Task
 from app.repositories.task_repository import TaskRepository
 
@@ -12,4 +13,15 @@ class TaskService:
     def get_task(self, task_id: int) -> Task | None:
 
         return self.repository.get_by_id(task_id)
+
+    def update_task(self, task_id: int, data: dict,) -> Task | None:
+        task = self.repository.get_by_id(task_id)
+
+        if task is None:
+            return None
+
+        return self.repository.update(
+            task=task,
+            data=data,
+        )
     
