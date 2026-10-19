@@ -8,9 +8,9 @@ class TaskRepository:
         self.db = db
 
     
-    def create(self, title: str, description: str | None = None,) -> Task:
+    def create(self, title: str, description: str | None = None, is_completed: bool = False) -> Task:
         
-        task = Task(title=title, description=description)
+        task = Task(title=title, description=description, is_completed=is_completed)
         
         self.db.add(task)
         self.db.commit()
