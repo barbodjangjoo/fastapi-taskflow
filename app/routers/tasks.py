@@ -62,3 +62,18 @@ def update_task(
         )
 
     return task
+
+@router.delete("/{task_id}", status_code=204)
+def delete_task(
+    task_id: int,
+    service: TaskService = Depends(get_task_service),
+):
+    deleted = service.delete_task(task_id)
+
+    if not deleted:
+        raise HTTPException(
+            status_code=404,
+            detail="Task not found",
+        )
+
+    return None
