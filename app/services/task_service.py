@@ -5,9 +5,9 @@ class TaskService:
     def __init__(self, repository: TaskRepository):
         self.repository = repository
 
-    def create_task(self, title: str, description: str | None = None) -> Task:
+    def create_task(self, title: str, description: str | None = None, is_completed: bool = False) -> Task:
         
-        return self.repository.create(title=title, description=description)
+        return self.repository.create(title=title, description=description, is_completed=is_completed)
 
     def get_task(self, task_id: int) -> Task | None:
 
