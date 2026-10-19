@@ -40,4 +40,7 @@ class TaskRepository:
 
         return task
     
+    def delete(self, task: Task) -> None:
+        self.db.delete(task)
+        self.db.commit()
 
