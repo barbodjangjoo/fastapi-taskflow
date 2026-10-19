@@ -1,3 +1,4 @@
+from app.models import task
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -30,6 +31,13 @@ class TaskRepository:
 
         return list(self.db.scalars(statement).all())
 
+    def update(self, task: Task, data: dict) -> Task:
+        for field, value in data.items():
+            setattr(task, field, value)
 
+        self.db.commit()
+        self.db.refresh(task)
+
+        return task
     
 
