@@ -24,4 +24,12 @@ class TaskService:
             task=task,
             data=data,
         )
+    def delete_task(self, task_id: int) -> bool:
+        task = self.repository.get_by_id(task_id)
+
+        if task is None:
+            return False
+
+        self.repository.delete(task)
+        return True
     
