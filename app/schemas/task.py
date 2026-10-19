@@ -16,3 +16,8 @@ class TaskResponse(BaseModel):
     completed: bool = Field(
         validation_alias="is_completed"
     )
+
+class TaskUpdate(BaseModel):
+    title: str | None = None
+    description: str | None = None
+    completed: bool | None = None
